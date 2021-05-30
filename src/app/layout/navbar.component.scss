@@ -1,0 +1,21 @@
+@import 'layout';
+
+.navbar {
+    align-items: center;
+    background-color: #364958;
+    color: #fff;
+    display: flex;
+    font-weight: 600;
+    height: 60px;
+    padding: $margin-size;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.company-name {
+    font-size: 18px;
+    margin: auto;
+    width: $container-width;
+}
