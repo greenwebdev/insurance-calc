@@ -20,4 +20,6 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 ## Other Notes
 
+Colour palette generated for this project: [coolors.co](https://coolors.co/d6ead9-87bba2-55828b-f2f7f7-364958).
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.2.

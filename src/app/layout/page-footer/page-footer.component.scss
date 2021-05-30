@@ -1,0 +1,14 @@
+@import 'layout';
+
+:host {
+    background-color: #F2F7F7;
+    bottom: 0;
+    padding: #{$margin-size * 2};
+    position: fixed;
+    width: 100%;
+}
+
+footer {
+    margin: auto;
+    width: $container-width;
+}
