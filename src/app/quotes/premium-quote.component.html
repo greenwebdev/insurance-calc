@@ -1,0 +1,60 @@
+<div class="quote-form">
+    <h1>Monthly Premium Quote</h1>
+
+    <p>Keen to find out what your monthly premium would cost? Enter your personal and occupational details below for a
+        quote on your cover.</p>
+
+    <div class="wrap">
+        <div class="form">
+            <form>
+                <fieldset>
+                    <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput placeholder="" [(ngModel)]="name" name="name" value="{{name}}">
+                    </mat-form-field>
+                </fieldset>
+                <fieldset>
+                    <mat-form-field>
+                        <mat-label>Date of Birth</mat-label>
+                        <input matInput [matDatepicker]="picker" (dateChange)="onChangeDate('change', $event)"
+                            (dateInput)="onChangeDate('change', $event)">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </fieldset>
+                <fieldset>
+                    <mat-form-field>
+                        <mat-label>Occupation</mat-label>
+                        <mat-select [(ngModel)]="occupationId" name="occupationId"
+                            (selectionChange)="onChangeOccupation(occupationId)">
+                            <mat-option *ngFor="let occupation of occupations" [value]="occupation.id">
+                                {{occupation.label}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </fieldset>
+                <fieldset>
+                    <mat-label class="label">Death - Sum Insured</mat-label>
+                    <div class="sum-insured">{{ formatSumInsured() }}</div>
+                    <mat-slider class="slider" #sumInsuredSlider min="100000" max="1500000" step="100000"
+                        [value]="sumInsured" (input)="onSliderChange(sumInsuredSlider.value)"></mat-slider>
+                </fieldset>
+            </form>
+        </div>
+        <div class="result">
+            <div class="calculate" *ngIf="!hasCalculated">
+                <button mat-raised-button color="primary" class="btn-calculate" (click)="onCalculate()">Calculate</button>
+            </div>
+            <div class="your-quote" *ngIf="hasCalculated">
+                <p class="info">Your cover would cost</p>
+                <div class="monthly-premium">
+                    <strong>${{monthlyPremium.toFixed(2)}}</strong>
+                    <span>per month</span>
+                </div>
+                <p class="info">
+                    as {{formatOccupation(occupationId)}} at {{age}} years of age.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
