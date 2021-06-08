@@ -3,8 +3,26 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 
-import { QuoteConfig } from './quote-config';
 import { API_BASE_URL } from '../config';
+
+export interface Occupation {
+    id: number;
+    label: string;
+    ratingId: number;
+    ratingIndex: number;
+    prefix: string;
+}
+
+export interface OccupationRating {
+    id: number;
+    name: string;
+    factor: number;
+}
+
+export interface QuoteConfig {
+    occupations: Occupation[];
+    occupationRatings: OccupationRating[];
+}
 
 @Injectable()
 export class ConfigService {

@@ -3,6 +3,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { QuotesModule } from '../quotes.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { PremiumQuoteComponent } from './premium-quote.component';
@@ -11,7 +12,9 @@ import { MatInputHarness } from '@angular/material/input/testing';
 import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { MatSliderHarness } from '@angular/material/slider/testing';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { QuoteConfig } from '../config.service';
+import { mockData } from '../config.mock-data';
 import * as moment from 'moment';
 
 let loader: HarnessLoader;
@@ -22,7 +25,9 @@ describe('PremiumQuoteComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [FormsModule, ReactiveFormsModule, QuotesModule], declarations: [PremiumQuoteComponent],
+            imports: [FormsModule, ReactiveFormsModule, QuotesModule, 
+                HttpClientTestingModule], 
+            declarations: [PremiumQuoteComponent],
             providers: [FormBuilder]
         })
             .compileComponents();
@@ -32,7 +37,7 @@ describe('PremiumQuoteComponent', () => {
 
     beforeEach(() => {
         component = fixture.componentInstance;
-        let formBuilder = TestBed.get(FormBuilder);
+        let formBuilder = TestBed.inject(FormBuilder);
         component.quoteForm = formBuilder.group({
             name: ['', Validators.required],
             dateOfBirth: ['', Validators.required],
@@ -40,6 +45,8 @@ describe('PremiumQuoteComponent', () => {
             sumInsured: [component.defaultSumInsured, Validators.required],
             age: [0]
         });
+        component.isLoading = false;
+        component.quoteConfig = mockData;
 
         component.ngOnInit();
         fixture.detectChanges();

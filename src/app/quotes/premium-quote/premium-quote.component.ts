@@ -3,9 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import * as moment from 'moment';
 import { audFormatter } from '../quotes.util';
-import { QuoteConfig } from '../quote-config';
-import { ConfigService } from '../config.service';
-import { OccupationRating } from '../occupation-rating';
+import { ConfigService, OccupationRating, QuoteConfig } from '../config.service';
 import { DEFAULT_FACTOR } from '../../config';
 
 @Component({
@@ -43,12 +41,9 @@ export class PremiumQuoteComponent implements OnInit {
     getConfig(): void {
         this.configService.getQuoteConfig()
             .subscribe(config => {
-                setTimeout(() => {
-                    this.isLoading = false;
-                }, 500);
+                this.isLoading = false;
                 this.quoteConfig = config;
-            }, (err: HttpErrorResponse) => {
-                console.info('error', err);
+            }, () => { // Error handler
                 this.isLoading = false;
             });
     }
