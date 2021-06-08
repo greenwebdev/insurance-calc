@@ -3,12 +3,12 @@
 :host {
     background-color: #F2F7F7;
     bottom: 0;
-    padding: #{$margin-size * 2};
+    padding: #{$margin-size * 2} 0;
     position: fixed;
     width: 100%;
+    z-index: 1;
 }
 
 footer {
     margin: auto;
-    width: $container-width;
 }

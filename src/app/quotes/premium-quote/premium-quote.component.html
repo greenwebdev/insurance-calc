@@ -1,0 +1,66 @@
+<div class="quote-form">
+    <div class="row">
+        <div class="col">
+            <h1>Monthly Premium Quote</h1>
+
+            <p>Keen to find out what your monthly premium would cost? Enter your personal and occupational details below for a
+                quote on your cover.</p>
+                <!-- <p>{{ quoteForm.controls | json }}</p> -->
+        </div>
+    </div>
+
+    <!-- <div class="row"> -->
+    <!-- <div class="wrap"> -->
+        <form (ngSubmit)="onSubmit()" [formGroup]="quoteForm" class="row wrap">
+            <div class="form col-12 col-md-6">
+                <fieldset>
+                    <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput name="name" formControlName="name" id="name" required>
+                    </mat-form-field>
+                </fieldset>
+                <fieldset>
+                    <mat-form-field>
+                        <mat-label>Date of Birth</mat-label>
+                        <input id="dateOfBirth" #dateOfBirth name="dateOfBirth" formControlName="dateOfBirth" matInput [matDatepicker]="picker" (dateChange)="onChangeDate(dateOfBirth.value)" required>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </fieldset>
+                <fieldset>
+                    <mat-form-field>
+                        <mat-label>Occupation</mat-label>
+                        <mat-select id="occupationId" formControlName="occupationId" name="occupationId"
+                            (selectionChange)="onChangeOccupation()" required>
+                            <mat-option *ngFor="let occupation of occupations" [value]="occupation.id">
+                                {{occupation.label}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </fieldset>
+                <fieldset>
+                    <mat-label class="label">Death - Sum Insured</mat-label>
+                    <div class="sum-insured">{{ formatSumInsured() }}</div>
+                    <mat-slider class="slider" id="sumInsuredSlider" formControlName="sumInsured" #sumInsuredSlider min="100000" max="1500000" step="100000"
+                        [value]="sumInsured" (input)="onSliderChange(sumInsuredSlider.value)"></mat-slider>
+                </fieldset>
+            </div>
+            <div class="result col-12 col-md-6">
+                <div class="calculate" *ngIf="!hasCalculated">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!quoteForm.valid" id="btnCalculate" class="btn-calculate">Calculate</button>
+                </div>
+                <div class="your-quote" *ngIf="hasCalculated">
+                    <p class="info">Your cover would cost</p>
+                    <div class="monthly-premium">
+                        <strong>${{monthlyPremium.toFixed(2)}}</strong>
+                        <span>per month</span>
+                    </div>
+                    <p class="info">
+                        as {{formatOccupation(quoteForm.controls.occupationId.value)}} at {{quoteForm.controls.age.value}} years of age.
+                    </p>
+                </div>
+            </div>
+        </form>
+    <!-- </div> -->
+    <!-- </div> -->
+</div>

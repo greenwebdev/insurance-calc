@@ -1,42 +1,43 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from './layout/layout.module';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { QuotesModule } from './quotes/quotes.module';
+import {
+    MomentDateAdapter,
+    MAT_MOMENT_DATE_ADAPTER_OPTIONS
+} from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { APP_DATE_FORMATS } from './shared/date-formats';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PremiumQuoteComponent } from './quotes/premium-quote.component';
 
 import 'moment/locale/en-au';
 
 @NgModule({
     declarations: [
-        AppComponent,
-        PremiumQuoteComponent
+        AppComponent
     ],
     imports: [
         BrowserModule,
-        FormsModule,
         AppRoutingModule,
-        MatSliderModule,
-        MatSelectModule,
-        MatInputModule,
-        MatButtonModule,
-        MatDatepickerModule,
-        MatMomentDateModule,
-        NoopAnimationsModule,
-        LayoutModule
+        LayoutModule,
+        QuotesModule
     ],
     providers: [
-        { provide: MAT_DATE_LOCALE, useValue: 'en-AU' }
+        // The locale would typically be provided on the root module of your application. We do it at
+        // the component level here, due to limitations of our example generation script.
+        { provide: MAT_DATE_LOCALE, useValue: 'en-AU' },
+
+        // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+        // `MatMomentDateModule` in your applications root module. We provide it at the component level
+        // here, due to limitations of our example generation script.
+        {
+            provide: DateAdapter,
+            useClass: MomentDateAdapter,
+            deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+        },
+        { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
     ],
     bootstrap: [AppComponent]
 })

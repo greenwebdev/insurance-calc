@@ -4,7 +4,8 @@ Monthly premium calculator, based on personal details and occupation.
 
 ## Assumptions
 
-* Since Date of Birth is on the form, we do not require the user to enter their age. Instead we display their age
+* Since Date of Birth is on the form, we do not require the user to enter their age. Instead we display their age in the results section for clarity.
+* The calculation appears to be incorrect to me, as the monthly premiums do not resemble quotes I have seen online.
 
 ## App
 
