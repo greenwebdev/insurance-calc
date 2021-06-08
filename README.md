@@ -6,6 +6,7 @@ Monthly premium calculator, based on personal details and occupation.
 
 * Since Date of Birth is on the form, we do not require the user to enter their age. Instead we display their age in the results section for clarity.
 * Age should be limited to 18 and older. As I ran out of time, there is no validation for this at present.
+* Death Cover Amount in the calculation is the same as Death - Sum Insured.
 
 ### Notes
 * As this is for a front end role, I have created a JSON server to simulate the initial config data, but the calculation itself is done inside the component. This would be done via the real API in a real world environment.
