@@ -19,39 +19,31 @@
 
     <form *ngIf="!isLoading && quoteConfig" (ngSubmit)="onSubmit()" [formGroup]="quoteForm" class="row wrap">
         <div class="form col-12 col-md-6">
-            <!-- <fieldset> -->
-                <mat-form-field>
-                    <mat-label>Name</mat-label>
-                    <input matInput name="name" formControlName="name" id="name" required>
-                </mat-form-field>
-            <!-- </fieldset>
-            <fieldset> -->
-                <mat-form-field>
-                    <mat-label>Date of Birth</mat-label>
-                    <input id="dateOfBirth" #dateOfBirth name="dateOfBirth" formControlName="dateOfBirth" matInput
-                        [matDatepicker]="picker" (dateChange)="onChangeDate(dateOfBirth.value)" required>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-            <!-- </fieldset>
-            <fieldset> -->
-                <mat-form-field>
-                    <mat-label>Occupation</mat-label>
-                    <mat-select id="occupationId" formControlName="occupationId" name="occupationId"
-                        (selectionChange)="onChangeOccupation()" required>
-                        <mat-option *ngFor="let occupation of quoteConfig?.occupations" [value]="occupation.id">
-                            {{occupation.label}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            <!-- </fieldset> -->
-            <fieldset>
-                <mat-label class="label">Death - Sum Insured</mat-label>
-                <div class="sum-insured">{{ formatSumInsured() }}</div>
-                <mat-slider class="slider" id="sumInsuredSlider" formControlName="sumInsured" #sumInsuredSlider
-                    min="100000" max="1500000" step="100000" [value]="defaultSumInsured"
-                    (input)="onSliderChange(sumInsuredSlider.value)"></mat-slider>
-            </fieldset>
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput name="name" formControlName="name" id="name" required>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Date of Birth</mat-label>
+                <input id="dateOfBirth" #dateOfBirth name="dateOfBirth" formControlName="dateOfBirth" matInput
+                    [matDatepicker]="picker" (dateChange)="onChangeDate(dateOfBirth.value)" required>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Occupation</mat-label>
+                <mat-select id="occupationId" formControlName="occupationId" name="occupationId"
+                    (selectionChange)="onChangeOccupation()" required>
+                    <mat-option *ngFor="let occupation of quoteConfig?.occupations" [value]="occupation.id">
+                        {{occupation.label}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-label class="label">Death - Sum Insured</mat-label>
+            <div class="sum-insured">{{ formatSumInsured() }}</div>
+            <mat-slider class="slider" id="sumInsuredSlider" formControlName="sumInsured" #sumInsuredSlider
+                min="100000" max="1500000" step="100000" [value]="defaultSumInsured"
+                (input)="onSliderChange(sumInsuredSlider.value)"></mat-slider>
         </div>
         <div class="result col-12 col-md-6">
             <div class="calculate" *ngIf="!hasCalculated">
