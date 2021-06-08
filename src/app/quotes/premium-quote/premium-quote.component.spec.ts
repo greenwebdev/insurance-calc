@@ -37,7 +37,7 @@ describe('PremiumQuoteComponent', () => {
             name: ['', Validators.required],
             dateOfBirth: ['', Validators.required],
             occupationId: ['', Validators.required],
-            sumInsured: [component.sumInsured, Validators.required],
+            sumInsured: [component.defaultSumInsured, Validators.required],
             age: [0]
         });
 
@@ -85,7 +85,7 @@ describe('PremiumQuoteComponent', () => {
             MatSliderHarness.with({ selector: '#sumInsuredSlider' })
         );
 
-        expect(await sumInsuredSlider.getValue()).toBe(fixture.componentInstance.sumInsured);
+        expect(await sumInsuredSlider.getValue()).toBe(fixture.componentInstance.defaultSumInsured);
     });
 
     it('should calculate age when a date of birth is entered', async () => {

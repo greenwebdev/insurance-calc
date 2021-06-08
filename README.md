@@ -9,6 +9,10 @@ Monthly premium calculator, based on personal details and occupation.
 
 ## App
 
+### API server
+
+Run `npx json-server --watch db.json --port 4242` to start the simple API. Without this the app will not load data.
+
 ### Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.

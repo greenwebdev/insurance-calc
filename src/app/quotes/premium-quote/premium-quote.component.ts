@@ -1,23 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
 import * as moment from 'moment';
 import { audFormatter } from '../quotes.util';
-import { ratings, occupations } from '../quote-data';
+import { QuoteConfig } from '../quote-config';
+import { ConfigService } from '../config.service';
+import { OccupationRating } from '../occupation-rating';
+import { DEFAULT_FACTOR } from '../../config';
 
 @Component({
     selector: 'premium-quote',
     templateUrl: './premium-quote.component.html',
+    providers: [
+        ConfigService
+    ],
     styleUrls: ['./premium-quote.component.scss']
 })
 export class PremiumQuoteComponent implements OnInit {
-
+    defaultSumInsured = 500000;
     monthlyPremium: number = 0;
     hasCalculated: boolean = false;
-    occupations = occupations;
+    quoteConfig: QuoteConfig | undefined;
+    isLoading: boolean = true;
 
     quoteForm!: FormGroup;
 
-    constructor(private formBuilder: FormBuilder) {
+    constructor(private formBuilder: FormBuilder, private configService: ConfigService) {
     }
 
     ngOnInit() {
@@ -25,9 +33,24 @@ export class PremiumQuoteComponent implements OnInit {
             name: ['', Validators.required],
             dateOfBirth: ['', Validators.required],
             occupationId: ['', Validators.required],
-            sumInsured: [500000, Validators.required],
+            sumInsured: [this.defaultSumInsured, Validators.required],
             age: [0]
         });
+
+        this.getConfig();
+    }
+
+    getConfig(): void {
+        this.configService.getQuoteConfig()
+            .subscribe(config => {
+                setTimeout(() => {
+                    this.isLoading = false;
+                }, 500);
+                this.quoteConfig = config;
+            }, (err: HttpErrorResponse) => {
+                console.info('error', err);
+                this.isLoading = false;
+            });
     }
 
     onSubmit() {
@@ -51,7 +74,7 @@ export class PremiumQuoteComponent implements OnInit {
      * @returns {String}
      */
     formatOccupation(occupationId: number) {
-        const occupation = occupations.find(occupation => occupation.id === occupationId);
+        const occupation = this.quoteConfig?.occupations.find(occupation => occupation.id === occupationId);
         return `${occupation?.prefix ?? ''} ${occupation?.label ?? ''}` ?? '';
     }
 
@@ -67,11 +90,11 @@ export class PremiumQuoteComponent implements OnInit {
 
     calculatePremium(): void {
         //Death Premium = (Death Cover amount * Occupation Rating Factor * Age) /1000 * 12
-        const occupation = occupations.find(occupation => occupation.id === this.quoteForm.controls.occupationId.value);
+        const occupation = this.quoteConfig?.occupations.find(occupation => occupation.id === this.quoteForm.controls.occupationId.value);
         const ratingIndex: number = occupation?.ratingIndex ?? -1;
-        let rating = ratingIndex >= 0 ? ratings[ratingIndex] : { factor: 1 };
+        let rating: OccupationRating | undefined = this.quoteConfig?.occupationRatings[ratingIndex];
 
-        this.monthlyPremium = (this.quoteForm.controls.sumInsured.value * rating.factor * this.quoteForm.controls.age.value) / (1000 * 12);
+        this.monthlyPremium = (this.quoteForm.controls.sumInsured.value * (rating ? rating?.factor : DEFAULT_FACTOR) * this.quoteForm.controls.age.value) / (1000 * 12);
         this.hasCalculated = true;
     }
 

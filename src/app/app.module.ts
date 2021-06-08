@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from './layout/layout.module';
 import { QuotesModule } from './quotes/quotes.module';
 import {
@@ -20,18 +21,14 @@ import 'moment/locale/en-au';
     ],
     imports: [
         BrowserModule,
+        HttpClientModule,
         AppRoutingModule,
         LayoutModule,
         QuotesModule
     ],
     providers: [
-        // The locale would typically be provided on the root module of your application. We do it at
-        // the component level here, due to limitations of our example generation script.
+        // Date formats and locale setup
         { provide: MAT_DATE_LOCALE, useValue: 'en-AU' },
-
-        // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
-        // `MatMomentDateModule` in your applications root module. We provide it at the component level
-        // here, due to limitations of our example generation script.
         {
             provide: DateAdapter,
             useClass: MomentDateAdapter,
