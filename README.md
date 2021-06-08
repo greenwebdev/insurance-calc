@@ -5,9 +5,15 @@ Monthly premium calculator, based on personal details and occupation.
 ## Assumptions
 
 * Since Date of Birth is on the form, we do not require the user to enter their age. Instead we display their age in the results section for clarity.
-* The calculation appears to be incorrect to me, as the monthly premiums do not resemble quotes I have seen online.
+* The calculation appears to be incorrect to me, as the monthly premiums do not resemble quotes I have seen online. Nevertheless, the formula has been followed as instructed.
+* Config data would potentially be loaded as part of a larger request for site data, instead of just for the quote form.
+
+### Notes
+*  As this is for a front end role, I have created a JSON server to simulate the initial config data, but the calculation itself is done inside the component. This would be done via the real API in a real world environment.
 
 ## App
+
+You will need to start both the API and the development server to test this application. If you run the development server without the API, an error message will be displayed and the form cannot be used.
 
 ### API server
 
