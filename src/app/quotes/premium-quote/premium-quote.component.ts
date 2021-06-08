@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import * as moment from 'moment';
 import { audFormatter } from '../quotes.util';
 import { ratings, occupations } from '../quote-data';
@@ -11,16 +10,10 @@ import { ratings, occupations } from '../quote-data';
     styleUrls: ['./premium-quote.component.scss']
 })
 export class PremiumQuoteComponent implements OnInit {
-    submitted = false;
 
-    // name: string = '';
-    sumInsured: number = 500000;
-    // age: number = 0;
     monthlyPremium: number = 0;
-    // occupationId: any = null;
     hasCalculated: boolean = false;
     occupations = occupations;
-    // isValid: boolean = false;
 
     quoteForm!: FormGroup;
 
@@ -32,17 +25,19 @@ export class PremiumQuoteComponent implements OnInit {
             name: ['', Validators.required],
             dateOfBirth: ['', Validators.required],
             occupationId: ['', Validators.required],
-            sumInsured: [this.sumInsured, Validators.required],
+            sumInsured: [500000, Validators.required],
             age: [0]
         });
     }
 
     onSubmit() {
-        // this.setFormValid();
         this.calculatePremium();
-        this.submitted = true;
     }
 
+    /**
+     * Set the control value manually on slider change. Without this the changes are sluggish.
+     * @param sliderValue Value of the material slider component
+     */
     onSliderChange(sliderValue: any) {
         this.quoteForm.controls.sumInsured.setValue(sliderValue);
         if (this.hasCalculated) {
@@ -65,42 +60,23 @@ export class PremiumQuoteComponent implements OnInit {
     }
 
     onChangeOccupation() {
-        // console.info('onChangeOcc', occupation, this.quoteForm);
-        // this.quoteForm.controls.occupationId = occupation;
         if (this.hasCalculated) {
             this.calculatePremium();
         }
     }
 
-    calculateAge(date: any): void {
-        console.info('calculateAge', date);
-        if (date) {
-            this.quoteForm.controls.age.setValue(moment().diff(date, 'years'));
-            console.info('this.quoteForm.controls.age.value', this.quoteForm.controls.age.value);
-        }
-    }
-
     calculatePremium(): void {
         //Death Premium = (Death Cover amount * Occupation Rating Factor * Age) /1000 * 12
-        // const ratingIndex = this.occupations[this.occupationId].ratingIndex;
         const occupation = occupations.find(occupation => occupation.id === this.quoteForm.controls.occupationId.value);
         const ratingIndex: number = occupation?.ratingIndex ?? -1;
-        let rating = ratingIndex >= 0 ? ratings[ratingIndex] : null;
-        if (!rating) {
-            return;
-        }
+        let rating = ratingIndex >= 0 ? ratings[ratingIndex] : { factor: 1 };
 
-        let premium: number = (this.quoteForm.controls.sumInsured.value * rating.factor * this.quoteForm.controls.age.value) / (1000 * 12);
-        this.monthlyPremium = premium;
+        this.monthlyPremium = (this.quoteForm.controls.sumInsured.value * rating.factor * this.quoteForm.controls.age.value) / (1000 * 12);
         this.hasCalculated = true;
     }
 
     onChangeDate(dateValue: any) {
-        console.info('onChange datepicker', dateValue);
-        // this.calculateAge(moment(dateValue, 'DD-MM-YYYY'));
         this.quoteForm.controls.age.setValue(moment().diff(moment(dateValue, 'DD-MM-YYYY'), 'years'));
-        // this.quoteForm.controls.dateOfBirth.setValue(moment().diff(moment(dateValue, 'DD-MM-YYYY'), 'years'));
-        console.info('date change', moment(dateValue, 'DD-MM-YYYY'), this.quoteForm.controls.dateOfBirth.value);
         if (this.hasCalculated) {
             this.calculatePremium();
         }

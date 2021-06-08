@@ -92,7 +92,6 @@ describe('PremiumQuoteComponent', () => {
         const givenDate = '18/11/1981';
         const givenAge = moment().diff(moment(givenDate, 'DD-MM-YYYY'), 'years');
 
-        // spyOn(fixture.componentInstance, 'calculateAge');
         const dobDatePicker = await loader.getHarness(
             MatDatepickerInputHarness.with({ selector: '#dateOfBirth' })
         );
